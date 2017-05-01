@@ -1,0 +1,39 @@
+\begin{thebibliography}{4}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Ratinov i Roth(2009)]{Ratinov:2009:DCM:1596374.1596399}
+Lev Ratinov i Dan Roth.
+\newblock Design challenges and misconceptions in named entity recognition.
+\newblock U \emph{Proceedings of the Thirteenth Conference on Computational
+  Natural Language Learning}, CoNLL '09, stranice 147--155, Stroudsburg, PA,
+  USA, 2009. Association for Computational Linguistics.
+\newblock ISBN 978-1-932432-29-9.
+\newblock URL \url{http://dl.acm.org/citation.cfm?id=1596374.1596399}.
+
+\bibitem[Tjong Kim~Sang(2002)]{tksintro2002conll}
+Erik~F. Tjong Kim~Sang.
+\newblock Introduction to the conll-2002 shared task: Language-independent
+  named entity recognition.
+\newblock U \emph{Proceedings of CoNLL-2002}, stranice 155--158. Taipei,
+  Taiwan, 2002.
+
+\bibitem[Tjong Kim~Sang i De~Meulder(2003)]{tjongkimsang2003conll}
+Erik~F. Tjong Kim~Sang i Fien De~Meulder.
+\newblock Introduction to the conll-2003 shared task: Language-independent
+  named entity recognition.
+\newblock U Walter Daelemans i Miles Osborne, urednici, \emph{Proceedings of
+  CoNLL-2003}, stranice 142--147. Edmonton, Canada, 2003.
+
+\bibitem[Tsai et~al.(2016)Tsai, Mayhew, i Roth]{DBLP:conf/conll/TsaiMR16}
+Chen{-}Tse Tsai, Stephen~D. Mayhew, i Dan Roth.
+\newblock Cross-lingual named entity recognition via wikification.
+\newblock U \emph{Proceedings of the 20th {SIGNLL} Conference on Computational
+  Natural Language Learning, CoNLL 2016, Berlin, Germany, August 11-12, 2016},
+  stranice 219--228, 2016.
+\newblock URL \url{http://aclweb.org/anthology/K/K16/K16-1022.pdf}.
+
+\end{thebibliography}

@@ -1,0 +1,50 @@
+This is BibTeX, Version 0.99d (TeX Live 2015/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: seminar.aux
+The style file: fer.bst
+Database file #1: literatura.bib
+A bad cross reference---entry "DBLP:conf/conll/TsaiMR16"
+refers to entry "DBLP:conf/conll/2016", which doesn't exist
+Warning--I didn't find a database entry for "Ratinov"
+You've used 4 entries,
+            2773 wiz_defined-function locations,
+            632 strings with 6065 characters,
+and the built_in function-call counts, 2434 in all, are:
+= -- 247
+> -- 90
+< -- 7
++ -- 30
+- -- 26
+* -- 160
+:= -- 336
+add.period$ -- 18
+call.type$ -- 4
+change.case$ -- 20
+chr.to.int$ -- 4
+cite$ -- 8
+duplicate$ -- 129
+empty$ -- 213
+format.name$ -- 34
+if$ -- 558
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 4
+newline$ -- 31
+num.names$ -- 18
+pop$ -- 45
+preamble$ -- 1
+purify$ -- 16
+quote$ -- 0
+skip$ -- 111
+stack$ -- 0
+substring$ -- 136
+swap$ -- 43
+text.length$ -- 4
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 44
+warning$ -- 0
+while$ -- 25
+width$ -- 0
+write$ -- 70
+(There was 1 error message)

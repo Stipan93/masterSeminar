@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.3.15)  9 APR 2017 22:50
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.3.15)  1 MAY 2017 23:15
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -751,6 +751,9 @@ Package: subfig 2005/06/28 ver: 1.3 subfig package
 )
 (/usr/share/texlive/texmf-dist/tex/latex/placeins/placeins.sty
 Package: placeins 2005/04/18  v 2.2
+)
+(/usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty
+\bigstrutjot=\dimen154
 ) (./seminar.aux)
 \openout1 = `seminar.aux'.
 
@@ -809,13 +812,13 @@ File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count143
-\scratchdimen=\dimen154
+\scratchdimen=\dimen155
 \scratchbox=\box33
 \nofMPsegments=\count144
 \nofMParguments=\count145
 \everyMPshowfont=\toks29
 \MPscratchCnt=\count146
-\MPscratchDim=\dimen155
+\MPscratchDim=\dimen156
 \MPnumerator=\count147
 \makeMPintoPDFobject=\count148
 \everyMPtoPDFconversion=\toks30
@@ -898,66 +901,144 @@ LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <12> not available
 
 ]
 Poglavlje 1.
-[1
+LaTeX Font Info:    Try loading font information for T1+pcr on input line 46.
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1pcr.fd
+File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
+) [1
 
 ]
 Poglavlje 2.
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 56.
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/omsptm.fd
+File: omsptm.fd 
+)
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 56.
+
+Underfull \hbox (badness 10000) in paragraph at lines 61--66
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 61--66
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 61--66
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 61--66
+
+ []
+
 [2
 
 ]
 Poglavlje 3.
+LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 76.
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 79.
+See the caption package documentation for explanation.
+
+LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10.95> not available
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 79.
+<images/eng.png, id=93, 1316.92pt x 702.625pt>
+File: images/eng.png Graphic file (type png)
+ <use images/eng.png>
+Package pdftex.def Info: images/eng.png used on input line 97.
+(pdftex.def)             Requested size: 526.75867pt x 281.04501pt.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 98.
+See the caption package documentation for explanation.
+
 [3
 
-]
+] <images/esp.png, id=101, 1308.89pt x 704.6325pt>
+File: images/esp.png Graphic file (type png)
+ <use images/esp.png>
+Package pdftex.def Info: images/esp.png used on input line 103.
+(pdftex.def)             Requested size: 523.54672pt x 281.848pt.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 104.
+See the caption package documentation for explanation.
+
+<images/ned.png, id=102, 1316.92pt x 699.61375pt>
+File: images/ned.png Graphic file (type png)
+ <use images/ned.png>
+Package pdftex.def Info: images/ned.png used on input line 108.
+(pdftex.def)             Requested size: 526.75867pt x 279.84055pt.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 109.
+See the caption package documentation for explanation.
+
+[4 <./images/eng.png> <./images/esp.png>] [5 <./images/ned.png>]
 Poglavlje 4.
-[4
+[6
 
 ]
 Poglavlje 5.
-[5
+[7
 
 ]
 Poglavlje 6.
-[6
+[8
 
 ]
 Poglavlje 7.
 
 Package hyperref Warning: Composite letter `\textasciicaron+c'
 (hyperref)                not defined in PD1 encoding,
-(hyperref)                removing `\textasciicaron' on input line 58.
+(hyperref)                removing `\textasciicaron' on input line 117.
 
-No file seminar.bbl.
-[7
+(./seminar.bbl [9
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 79.
- [8]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 79.
+Poglavlje 8.
+) [10
+
+]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 136.
+ [11]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 136.
  (./seminar.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 79.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 79.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 136.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 136.
 Package rerunfilecheck Info: File `seminar.out' has not changed.
-(rerunfilecheck)             Checksum: EAF689F6B5B6979CFE1766DB6F1F89E6;320.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 79.
+(rerunfilecheck)             Checksum: 3092BE3A6BDA69FF6A8041764B154363;368.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 136.
  ) 
 Here is how much of TeX's memory you used:
- 11345 strings out of 494333
- 161485 string characters out of 6163939
- 264824 words of memory out of 5000000
- 14478 multiletter control sequences out of 15000+600000
- 40009 words of font info for 48 fonts, out of 8000000 for 9000
+ 11508 strings out of 494333
+ 163967 string characters out of 6163939
+ 271213 words of memory out of 5000000
+ 14588 multiletter control sequences out of 15000+600000
+ 65585 words of font info for 86 fonts, out of 8000000 for 9000
  372 hyphenation exceptions out of 8191
- 43i,6n,40p,306b,364s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 43i,8n,40p,627b,525s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
-e/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist
-/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1
-/urw/helvetic/uhvro8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/
-utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
-Output written on seminar.pdf (10 pages, 50516 bytes).
+e/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/
+fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/u
+rw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/
+uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
+</usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/tex
+live/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist
+/fonts/type1/urw/times/utmri8a.pfb>
+Output written on seminar.pdf (13 pages, 190603 bytes).
 PDF statistics:
- 113 PDF objects out of 1000 (max. 8388607)
- 95 compressed objects within 1 object stream
- 19 named destinations out of 1000 (max. 500000)
- 57 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 185 PDF objects out of 1000 (max. 8388607)
+ 156 compressed objects within 2 object streams
+ 35 named destinations out of 1000 (max. 500000)
+ 80 words of extra memory for PDF output out of 10000 (max. 10000000)
 

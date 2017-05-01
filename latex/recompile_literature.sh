@@ -1,5 +1,5 @@
 
-pdflatex zavrsni.tex
-bibtex zavrsni.aux
-pdflatex zavrsni.tex
-pdflatex zavrsni.tex
+pdflatex seminar.tex
+bibtex seminar.aux
+pdflatex seminar.tex
+pdflatex seminar.tex
