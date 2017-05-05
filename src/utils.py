@@ -1,3 +1,5 @@
+from nltk import SnowballStemmer
+
 from src.project_path import project_path
 
 
@@ -17,6 +19,16 @@ class Data:
         print("\ntest:")
         self.test.print_stats()
 
+    def get_set(self, set):
+        if set == 'train':
+            return self.train
+        elif set == 'validation':
+            return self.validation
+        elif set == 'test':
+            return self.test
+        else:
+            return None
+
 
 class Dataset:
     def __init__(self):
@@ -33,6 +45,10 @@ class Dataset:
 
     def last_doc(self):
         return self.documents[len(self.documents) - 1]
+
+    def merge(self, dataset):
+        self.documents.extend(dataset.documents)
+        self.entity_counter.update(dataset.entity_counter)
 
 
 class Document:
@@ -61,10 +77,12 @@ class Sentence:
 
 
 class Word:
-    def __init__(self, token, pos, entity):
+    def __init__(self, token, pos, entity, stem):
         self.token = token
         self.pos = pos
         self.entity = entity
+        self.stem = stem
+        # self.tag = tag
 
     def __repr__(self):
         return self.token
@@ -87,6 +105,7 @@ def read_datasets(path):
 def read_eng_dataset(path):
     dataset = Dataset()
     document = sentence = None
+    stemmer = SnowballStemmer("english")
     with open(path, encoding='utf-8', mode='r') as f:
         new_sentence = True
         while True:
@@ -105,7 +124,7 @@ def read_eng_dataset(path):
                     new_sentence = False
                 args = line.split()
                 ent_type = entity = None
-                sentence.add_word(Word(args[0], args[1], args[3]))
+                sentence.add_word(Word(args[0], args[1], args[3], stemmer.stem(args[0])))
                 if args[3] != 'O':
                     ent_type, entity = args[3].split('-', 2)
                 if ent_type == 'B':
@@ -117,6 +136,7 @@ def read_esp_dataset(path):
     dataset = Dataset()
     document = Document()
     sentence = None
+    stemmer = SnowballStemmer("spanish")
     dataset.add_document(document)
     with open(path, encoding='latin-1', mode='r') as f:
         new_sentence = True
@@ -133,7 +153,7 @@ def read_esp_dataset(path):
                     new_sentence = False
                 args = line.split()
                 ent_type = entity = None
-                sentence.add_word(Word(args[0], None, args[1]))
+                sentence.add_word(Word(args[0], None, args[1], stemmer.stem(args[0])))
                 if args[1] != 'O':
                     ent_type, entity = args[1].split('-', 2)
                 if ent_type == 'B':
@@ -144,6 +164,7 @@ def read_esp_dataset(path):
 def read_ned_dataset(path):
     dataset = Dataset()
     document = sentence = None
+    stemmer = SnowballStemmer("dutch")
     with open(path, encoding='latin-1', mode='r') as f:
         new_sentence = True
         while True:
@@ -162,7 +183,7 @@ def read_ned_dataset(path):
                     new_sentence = False
                 args = line.split()
                 ent_type = entity = None
-                sentence.add_word(Word(args[0], args[1], args[2]))
+                sentence.add_word(Word(args[0], args[1], args[2], stemmer.stem(args[0])))
                 if args[2] != 'O':
                     ent_type, entity = args[2].split('-', 2)
                 if ent_type == 'B':

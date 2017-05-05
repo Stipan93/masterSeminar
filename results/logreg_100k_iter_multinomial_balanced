@@ -1,0 +1,45 @@
+/home/stipan/dev/tools/anaconda3/bin/python3.5 /home/stipan/dev/fer/seminar/src/baseline.py -train eng -validation eng -test eng
+checking arguments
+loading train, validation and test set
+data loaded in:  1143 ms
+
+getting train features
+train features:  3333 ms
+
+getting validation features
+validation features:  785 ms
+
+getting test features
+test features:  698 ms
+
+transforming features
+203621
+51362
+46435
+###################
+Features transform:  1486 ms
+(203621, 36)
+(51362, 36)
+(46435, 36)
+
+training model
+
+training done:  890769 ms
+             precision    recall  f1-score   support
+
+      B-LOC       0.49      0.26      0.34      1668
+     B-MISC       0.16      0.56      0.24       702
+      B-ORG       0.29      0.49      0.36      1661
+      B-PER       0.50      0.63      0.56      1617
+      I-LOC       0.45      1.00      0.62       257
+     I-MISC       0.25      0.98      0.40       216
+      I-ORG       0.50      1.00      0.66       835
+      I-PER       0.93      1.00      0.96      1156
+          O       1.00      0.88      0.94     38323
+
+avg / total       0.91      0.84      0.86     46435
+
+micro:  0.838074728115
+macro:  0.506196242607
+
+Process finished with exit code 0
