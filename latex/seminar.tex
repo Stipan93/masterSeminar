@@ -74,10 +74,9 @@ U ovom primjeru entitet OSOBA sadrži jedan token dok entitet ORGANIZACIJA sadr�
 \chapter{Analiza podataka}
 Model za međujezično prepoznavanje imenovanih entiteta razvijen je nad skupovima podataka iz CoNLL02 i CoNLL03 dijeljenog zadatka. Skup podataka uključuje podatke na engleskom, španjolskom i nizozemskom jeziku. CoNLL skup podataka je podskup novinskih članaka Reutersa iz 1996. Entiteti su označeni u 4 razreda: PER, ORG, LOC i MISC. Skup za treniranje su članci iz kolovoza 1996, dok je testni skup iz prosinca 1996. Imenovani entiteti u testnom skupu su znatno različiti od skupa za treniranje što ih čini značajno težim.\citep{Ratinov:2009:DCM:1596374.1596399} \\
 \indent Španjolski i nizozemski skup podataka označen je BIO\footnote{Format u kojem se s B (\textbf{B}egining) označavaju riječi na početku entiteta, I (\textbf{I}nside) označavaju riječi unutar entiteta i O (\textbf{O}utside) označavaju riječi koje ne pripadaju ni jednom entitetu.} formatom dok je engleski skup podataka označen IO formatom\footnote{Format u kojem se s I (\textbf{I}nside) označavaju riječi koje pripadaju nekom entitetu i O (\textbf{O}utside) označavaju riječi koje ne pripadaju ni jednom entitetu.} koji sam naknadno pretvorio u BIO.
-
 \begin{center}
 \captionof{table}{Broj entiteta u skupovima}
-\begin{tabular}{ |c|l|c|c|c|c| }
+\begin{tabular}{ clcccc }
 \hline
 language & set & PER & ORG & LOC & MISC \\ \hline
 \multirow{3}{*}{eng} & train & 6600 & 6321 & 7140 & 3438 \\

@@ -1,0 +1,69 @@
+
+Corpus:  eng
+
+train:
+Entity counters:
+PER  ->  6600
+LOC  ->  7140
+MISC  ->  3438
+ORG  ->  6321
+
+validation:
+Entity counters:
+PER  ->  1842
+LOC  ->  1837
+MISC  ->  922
+ORG  ->  1341
+
+test:
+Entity counters:
+PER  ->  1617
+ORG  ->  1661
+MISC  ->  702
+LOC  ->  1668
+########################################
+Corpus:  esp
+
+train:
+Entity counters:
+PER  ->  4321
+ORG  ->  7390
+MISC  ->  2173
+LOC  ->  4913
+
+validation:
+Entity counters:
+PER  ->  1222
+ORG  ->  1700
+MISC  ->  445
+LOC  ->  984
+
+test:
+Entity counters:
+PER  ->  735
+ORG  ->  1400
+MISC  ->  339
+LOC  ->  1084
+########################################
+Corpus:  ned
+
+train:
+Entity counters:
+PER  ->  4716
+LOC  ->  3208
+MISC  ->  3338
+ORG  ->  2082
+
+validation:
+Entity counters:
+PER  ->  703
+ORG  ->  686
+MISC  ->  748
+LOC  ->  479
+
+test:
+Entity counters:
+PER  ->  1098
+ORG  ->  882
+MISC  ->  1187
+LOC  ->  774

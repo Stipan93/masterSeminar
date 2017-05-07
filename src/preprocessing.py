@@ -32,21 +32,3 @@ def transform_train_features(features):
     for i in range(features.shape[1]):
         new_features[:, i] = fit_transform_column(encoders, features, i)
     return np.array(new_features), encoders
-
-
-def transform_all_features(train_features, validation_features, test_features):
-    encoders = []
-    train_len, validation_len, test_len = len(train_features), len(validation_features), len(test_features)
-    all_features = []
-    all_features.extend(train_features)
-    all_features.extend(validation_features)
-    all_features.extend(test_features)
-    all_features = np.array(all_features)
-    new_features = np.zeros(all_features.shape)
-    for i in range(all_features.shape[1]):
-        new_features[:, i] = fit_transform_column(encoders, all_features, i)
-    new_features = np.array(new_features)
-    ohe = preprocessing.OneHotEncoder()
-    new_features = ohe.fit_transform(new_features)
-    return new_features[:train_len, :], new_features[train_len:train_len+validation_len, :], \
-           new_features[train_len+validation_len:, :], encoders

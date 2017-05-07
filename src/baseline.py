@@ -1,23 +1,8 @@
 import argparse
 import pickle
-import sys
-import numpy as np
-import time
 
-from sklearn.linear_model import Perceptron, LogisticRegressionCV
-from sklearn.metrics import classification_report, precision_score, f1_score
-
-from src.preprocessing import transform_train_features, transform_test_features, transform_all_features
-from src.utils import get_data, Dataset
-from src.feature_extraction import get_features
-
-
-def current_milli_time():
-    return int(round(time.time() * 1000))
-
-
-def print_ms(message, t1, t2):
-    print(message, t2-t1, 'ms')
+from src.utils import get_data, Dataset, print_ms, current_milli_time
+from src.models import BaseLine
 
 
 def print_help(parser, message):
@@ -110,78 +95,16 @@ def get_datasets(train_sets, validation_sets, test_sets):
     return train, validation, test
 
 
-def get_all_features(train, validation, test):
-    t1 = current_milli_time()
-    print('\ngetting train features')
-    train_features, train_y = get_features(train)
-    t2 = current_milli_time()
-    print_ms('train features: ', t1, t2)
-
-    print('\ngetting validation features')
-    validation_features, validation_y = get_features(validation)
-    t3 = current_milli_time()
-    print_ms('validation features: ', t2, t3)
-
-    print('\ngetting test features')
-    test_features, test_y = get_features(test)
-    t4 = current_milli_time()
-    print_ms('test features: ', t3, t4)
-    return train_eatures, train_y, validation_features, validation_y, test_features, test_y
-
-
 def main(args):
     train_sets, validation_sets, test_sets = parse_arguments(args)
     train, validation, test = get_datasets(train_sets, validation_sets, test_sets)
-    train_features, train_y, validation_features, validation_y, test_features, test_y = \
-        get_all_features(train, validation, test)
+    model = BaseLine()
+    train_features, train_y, validation_features, validation_y, test_features, test_y, encoders = \
+        model.get_transform_features(train, validation, test)
 
-    print('\ntransforming features')
-    print(len(train_features))
-    print(len(validation_features))
-    print(len(test_features))
-    print('###################')
-    t5 = current_milli_time()
-    train_features, validation_features, test_features, encoders = \
-        transform_all_features(train_features, validation_features, test_features)
-    print_ms('Features transform: ', t5, current_milli_time())
-    print(train_features.shape)
-    print(validation_features.shape)
-    print(test_features.shape)
-
-    print('\ntraining model')
-
-    t6 = current_milli_time()
-    # lr = LogisticRegressionCV(class_weight='balanced', n_jobs=-1, max_iter=300000, multi_class='multinomial')
-    # lr.fit(train_features, train_y)
-    best_estimator = None
-    max_f1_micro = None
-    max_f1_macro = None
-    for alpha in [10**i for i in range(-10, -1)]:
-        p = Perceptron(n_jobs=-1, alpha=alpha, penalty='l2', shuffle=True)
-        p.fit(train_features, train_y)
-
-        print_ms('\ntraining done: ', t6, current_milli_time())
-        predicted_y = p.predict(validation_features)
-        temp_f1 = f1_score(validation_y, predicted_y, average='micro')
-        if max_f1_micro is None or max_f1_micro < temp_f1:
-            max_f1_micro = temp_f1
-            max_f1_macro = f1_score(validation_y, predicted_y, average='macro')
-            best_estimator = p
-        print(p.get_params())
-        print(classification_report(validation_y, predicted_y))
-        print("micro: ", precision_score(validation_y, predicted_y, average='micro'))
-        print("macro: ", precision_score(validation_y, predicted_y, average='macro'))
-        print("#"*100)
-    # print(len(train.documents))
-    # print(len(validation.documents))
-    # print(len(test.documents))
-    a = np.hstack((train_features, validation_features))
-    best_estimator.fit(a, train_y+validation_y)
-    predicted_y = best_estimator.predict(test_features)
-    print(classification_report(test_y, predicted_y))
-    print("micro: ", precision_score(test_y, predicted_y, average='micro'))
-    print("macro: ", precision_score(test_y, predicted_y, average='macro'))
-    print("#" * 100)
+    model.train(train_features, train_y, validation_features, validation_y)
+    predicted_y = model.predict(test_features)
+    model.eval(test_y, predicted_y, '../results/' + args[2] + '_' + args[6])
 
 
 def make_args(train, test):

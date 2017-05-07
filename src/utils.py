@@ -1,6 +1,23 @@
+import time
 from nltk import SnowballStemmer
-
+import numpy as np
 from src.project_path import project_path
+
+
+def current_milli_time():
+    return int(round(time.time() * 1000))
+
+
+def print_ms(message, t1, t2):
+    print(message, t2-t1, 'ms')
+
+
+class FeatureSet:
+    def __init__(self, data, train_len, validation_len, test_len):
+        self.data = np.array(data)
+        self.train_len = train_len
+        self.validation_len = validation_len
+        self.test_len = test_len
 
 
 class Data:
