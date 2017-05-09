@@ -1,4 +1,4 @@
-\begin{thebibliography}{4}
+\begin{thebibliography}{5}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -27,6 +27,12 @@ Erik~F. Tjong Kim~Sang i Fien De~Meulder.
   named entity recognition.
 \newblock U Walter Daelemans i Miles Osborne, urednici, \emph{Proceedings of
   CoNLL-2003}, stranice 142--147. Edmonton, Canada, 2003.
+
+\bibitem[Tsai i Roth(2016)]{TsaiRo16b}
+Chen-Tse Tsai i Dan Roth.
+\newblock Cross-lingual wikification using multilingual embeddings.
+\newblock U \emph{NAACL}, 6 2016.
+\newblock URL \url{http://cogcomp.cs.illinois.edu/papers/TsaiRo16b.pdf}.
 
 \bibitem[Tsai et~al.(2016)Tsai, Mayhew, i Roth]{DBLP:conf/conll/TsaiMR16}
 Chen{-}Tse Tsai, Stephen~D. Mayhew, i Dan Roth.

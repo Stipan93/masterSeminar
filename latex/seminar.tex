@@ -71,14 +71,18 @@ U ovom primjeru entitet OSOBA sadrži jedan token dok entitet ORGANIZACIJA sadr�
 	\item MISC -- Razno
 \end{itemize}
 
+\newpage 
+
+Najčešći pristup ovom problemu je uz pomoć metoda nadziranog strojnog učenja. Ovaj problem spada u kategoriju označavanja slijedova (engl. sequence labeling) gdje se svakom članu slijeda pridružuje neka oznaka tj. predefinirana kategorija. Oznake su ovisne o svim članovima oko njih u slijedu. Zbog toga se ovisnost izražava s lijeva na desno, s desna na lijevo ili zajednički. Radi boljeg razumjevanja problema u idućem poglavlju će se pisati o analizi podataka.
+
 \chapter{Analiza podataka}
 Model za međujezično prepoznavanje imenovanih entiteta razvijen je nad skupovima podataka iz CoNLL02 i CoNLL03 dijeljenog zadatka. Skup podataka uključuje podatke na engleskom, španjolskom i nizozemskom jeziku. CoNLL skup podataka je podskup novinskih članaka Reutersa iz 1996. Entiteti su označeni u 4 razreda: PER, ORG, LOC i MISC. Skup za treniranje su članci iz kolovoza 1996, dok je testni skup iz prosinca 1996. Imenovani entiteti u testnom skupu su znatno različiti od skupa za treniranje što ih čini značajno težim.\citep{Ratinov:2009:DCM:1596374.1596399} \\
-\indent Španjolski i nizozemski skup podataka označen je BIO\footnote{Format u kojem se s B (\textbf{B}egining) označavaju riječi na početku entiteta, I (\textbf{I}nside) označavaju riječi unutar entiteta i O (\textbf{O}utside) označavaju riječi koje ne pripadaju ni jednom entitetu.} formatom dok je engleski skup podataka označen IO formatom\footnote{Format u kojem se s I (\textbf{I}nside) označavaju riječi koje pripadaju nekom entitetu i O (\textbf{O}utside) označavaju riječi koje ne pripadaju ni jednom entitetu.} koji sam naknadno pretvorio u BIO.
+\indent Španjolski i nizozemski skup podataka označen je BIO\footnote{Format u kojem se s B (\textbf{B}egining) označavaju riječi na početku entiteta, I (\textbf{I}nside) označavaju riječi unutar entiteta i O (\textbf{O}utside) označavaju riječi koje ne pripadaju ni jednom entitetu.} formatom dok je engleski skup podataka označen IO formatom\footnote{Format u kojem se s I (\textbf{I}nside) označavaju riječi koje pripadaju nekom entitetu i O (\textbf{O}utside) označavaju riječi koje ne pripadaju ni jednom entitetu.} koji je naknadno pretvoren u BIO.
 \begin{center}
 \captionof{table}{Broj entiteta u skupovima}
 \begin{tabular}{ clcccc }
 \hline
-language & set & PER & ORG & LOC & MISC \\ \hline
+\textbf{language} & \textbf{set} & \textbf{PER} & \textbf{ORG} & \textbf{LOC} & \textbf{MISC} \\ \hline
 \multirow{3}{*}{eng} & train & 6600 & 6321 & 7140 & 3438 \\
  & validation & 1842 & 1341 & 1837 & 922 \\
  & test & 1617 & 1661 & 1668 & 702 \\ \hline
@@ -91,6 +95,7 @@ language & set & PER & ORG & LOC & MISC \\ \hline
 \end{tabular}
 \end{center}
 
+\newpage
 
 \begin{center}
   \makebox[\textwidth]{\includegraphics[scale=0.4]{images/eng.png}}
@@ -108,13 +113,41 @@ language & set & PER & ORG & LOC & MISC \\ \hline
 \captionof{figure}{Veličina entiteta skupa podataka na nizozemskom jeziku}
 \end{center}
 \chapter{Model}
+U svrhu prepoznavanja imenovanih entiteta u tekstu najčešće se koriste sljedeći modeli: 
+\begin{itemize}
+\item HMM (Hidden Markov Model)
+\item CRF (Conditional random field)
+\item MaxEnt
+\item Perceptron
+\end{itemize}
+
+U ovom radu korišten je Perceptron. Iako prva dva navedena modela daju mogućnost zajedničkog učenja oznaka u slijedu, ipak je korišten Perceptron koji nam omogućuje korištenje raznih značajki.
+
+\indent Perceptron je matematički model neurona. U stvarnom neuronu dendriti dobivaju signale od aksona drugih neurona dok su u matematičkom modelu dendriti predstavljeni s brojčanim vrijednostima. Izlaz neurona, akson, predstavljen je step funkcijom koja kao argument prima težinsku sumu ulaza neurona zbrojenom s pomakom.\footnote{\url{https://cs.stanford.edu/people/eroberts/courses/soco/projects/neural-networks/Neuron/index.html}}
+\[ out = \sum_{i=1}^{n} w_ix_i + b\]
+
+Perceptron pokušava naučiti težine na način da ih ne ažurira nakon prolaska kroz cijeli skup podataka već nakon svakog primjera. Ovakav način učenja se zove online učenje.  
+\newpage
+\begin{center}
+  \makebox[\textwidth]{\includegraphics[scale=0.4]{images/neuron.png}}
+\captionof{figure}{Matematički model biološkog neurona}
+\end{center}
 
 \chapter{Implementacija modela}
+cross validacija, baseline, obicne znacajke, gazetteri-grupe, wikifikacija
+
+Sustav za prepoznavanje imenovanih entiteta je razvijen u programskom jeziku Python3. Korištena je implementacija Perceptrona iz scikit-learn\footnote{\url{http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Perceptron.html}} knjižnice. 
+Glavni program runner.py pokreće cijeli cjevovod sustava. Moguće je specificirati jezike skupa za treniranje, validaciju i testiranje preko argumenata komandne linije. Naredba za pokretanje programa koji trenira i validira sustav engleskim i nizozemskim jezikom a testira nad španjolskim jezikom.
+
+\[ python3  runner.py -train eng,esp -validation eng,esp -test esp \]
+\section{Značajke}
+
+\section{Pretprocesiranje značajki}
 
 \chapter{Evaluacija}
-
+evaluacijske mjere, tablice s rezultatima
 \chapter{Zaključak}
-
+zakljuciti
 \bibliographystyle{fer}
 \bibliography{literatura}
 \nocite{*}

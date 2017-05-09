@@ -55,3 +55,17 @@ def get_next(words, i, offset):
         return words[i + offset]
     else:
         return None
+
+
+def get_index_label(index):
+    if index == 0:
+        return 'B-'
+    else:
+        return 'I-'
+
+
+def get_topic(word, topics, index):
+    for topic, phrases in topics.items():
+        if word in phrases.get(index, []):
+            return get_index_label(index) + topic
+    return 'unknown'

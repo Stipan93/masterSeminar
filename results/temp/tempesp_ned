@@ -1,0 +1,17 @@
+{'random_state': 0, 'fit_intercept': True, 'n_iter': 5, 'n_jobs': 1, 'eta0': 1.0, 'verbose': 0, 'penalty': 'l1', 'class_weight': None, 'warm_start': False, 'alpha': 1e-05, 'shuffle': True}
+             precision    recall  f1-score   support
+
+      B-LOC       0.53      0.29      0.38       774
+     B-MISC       0.19      0.20      0.19      1187
+      B-ORG       0.23      0.40      0.29       882
+      B-PER       0.55      0.10      0.17      1098
+      I-LOC       0.45      0.96      0.61        49
+     I-MISC       0.32      0.98      0.48       410
+      I-ORG       0.68      0.93      0.79       551
+      I-PER       0.93      0.97      0.95       807
+          O       0.99      0.98      0.98     63117
+
+avg / total       0.94      0.93      0.93     68875
+
+micro: 0.933183303085
+macro: 0.540877046697

@@ -2,7 +2,7 @@ import argparse
 import pickle
 
 from src.utils import get_data, Dataset, print_ms, current_milli_time
-from src.models import BaseLine
+from src.models import BaseLine, BaseLineAndGazetters
 
 
 def print_help(parser, message):
@@ -95,26 +95,27 @@ def get_datasets(train_sets, validation_sets, test_sets):
     return train, validation, test
 
 
-def main(args):
+def main(args, model, results_file):
     train_sets, validation_sets, test_sets = parse_arguments(args)
     train, validation, test = get_datasets(train_sets, validation_sets, test_sets)
-    model = BaseLine()
+    # model = BaseLine()
     train_features, train_y, validation_features, validation_y, test_features, test_y, encoders = \
         model.get_transform_features(train, validation, test)
 
     model.train(train_features, train_y, validation_features, validation_y)
     predicted_y = model.predict(test_features)
-    model.eval(test_y, predicted_y, '../results/' + args[2] + '_' + args[6])
+    model.eval(test_y, predicted_y, results_file)
 
 
 def make_args(train, test):
-    return ['/home/stipan/dev/fer/seminar/src/baseline.py', '-train', train, '-validation', train, '-test', test]
+    return ['/home/stipan/dev/fer/seminar/src/runner.py', '-train', train, '-validation', train, '-test', test]
 
 
 def all_combinations():
     for i in ['eng', 'esp', 'ned']:
         for j in ['eng', 'esp', 'ned']:
-            main(make_args(i, j))
+            main(make_args(i, j), BaseLine(n_iter=100), '../results/temp/' + i + '_' + j)
+            # main(make_args(i, j), BaseLineAndGazetters(), '../results/temp/' + i + '_' + j)
 
 
 if __name__ == '__main__':

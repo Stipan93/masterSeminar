@@ -1,10 +1,14 @@
+import os
+import numpy as np
+
 from sklearn import preprocessing
 from sklearn.linear_model import Perceptron
 from sklearn.metrics import classification_report, precision_score, f1_score
+from sklearn.model_selection import GridSearchCV
 
 from src.feature_extraction import *
 from src.preprocessing import fit_transform_column
-from src.utils import current_milli_time, print_ms
+from src.utils import current_milli_time, print_ms, Dataset
 
 
 class Model:
@@ -19,37 +23,30 @@ class Model:
         print('\ntraining model')
 
         t6 = current_milli_time()
-        # lr = LogisticRegressionCV(class_weight='balanced', n_jobs=-1, max_iter=300000, multi_class='multinomial')
-        # lr.fit(train_features, train_y)
+
+        train_validation_features = np.append(train_features, validation_features, axis=0)
+        train_validation_y = np.append(train_y, validation_y)
+
         if not cv:
-            self._best_estimator = Perceptron(n_jobs=-1, alpha=0.00001, penalty=self.penalty,
+            self._best_estimator = Perceptron(n_jobs=-1, alpha=0.00001, penalty='l2',
                                               shuffle=True, n_iter=self.n_iter)
         else:
-            max_f1_micro = None
-            max_f1_macro = None
-            for alpha in self.alpha_range:
-                p = Perceptron(n_jobs=-1, alpha=alpha, penalty=self.penalty, shuffle=True, n_iter=self.n_iter)
-                p.fit(train_features, train_y)
-
-                print_ms('\ntraining done: ', t6, current_milli_time())
-                predicted_y = p.predict(validation_features)
-                temp_f1 = f1_score(validation_y, predicted_y, average='micro')
-                if max_f1_micro is None or max_f1_micro < temp_f1:
-                    max_f1_micro = temp_f1
-                    max_f1_macro = f1_score(validation_y, predicted_y, average='macro')
-                    self._best_estimator = p
-                    # print(p.get_params())
-                    # print(classification_report(validation_y, predicted_y))
-                    # print("micro: ", precision_score(validation_y, predicted_y, average='micro'))
-                    # print("macro: ", precision_score(validation_y, predicted_y, average='macro'))
-                    # print("#"*100)
-        self._best_estimator.fit(np.append(train_features, validation_features, axis=0),
-                                 np.append(train_y, validation_y))
+            parameters = {'alpha': self.alpha_range, 'penalty': self.penalty}
+            clf = GridSearchCV(Perceptron(shuffle=True, n_iter=self.n_iter), parameters, n_jobs=-1, cv=5)
+            clf.fit(train_validation_features, train_validation_y)
+            print_ms('\ntraining done: ', t6, current_milli_time())
+            self._best_estimator = clf.best_estimator_
+            # print(clf.get_params())
+            # print(classification_report(validation_y, predicted_y))
+            # print("micro: ", precision_score(validation_y, predicted_y, average='micro'))
+            # print("macro: ", precision_score(validation_y, predicted_y, average='macro'))
+            # print("#"*100)
+        self._best_estimator.fit(train_validation_features, train_validation_y)
 
     def predict(self, x):
         raise NotImplemented('This method is not implemented')
 
-    def _make_feature_vec(self, word, prev, prev_prev, next, next_next):
+    def _make_feature_vec(self, word, prev, prev_prev, next, next_next, next_next_next):
         raise NotImplemented('This method is not implemented')
 
     def _get_features(self, data):
@@ -63,7 +60,9 @@ class Model:
                     prev_prev = get_prev(sentance.words, i, 2)
                     next = get_next(sentance.words, i, 1)
                     next_next = get_next(sentance.words, i, 2)
-                    features.append(self._make_feature_vec(sentance.words[i], prev, prev_prev, next, next_next))
+                    next_next_next = get_next(sentance.words, i, 3)
+                    features.append(self._make_feature_vec(sentance.words[i], prev, prev_prev, next,
+                                                           next_next, next_next_next))
                     Y.append(sentance.words[i].entity)
         return np.array(features), np.array(Y)
 
@@ -130,13 +129,13 @@ class Model:
 
 class BaseLine(Model):
 
-    def __init__(self, alpha_range=[10 ** i for i in range(-10, -1)], penalty='l2', n_iter=5):
+    def __init__(self, alpha_range=[10 ** i for i in range(-10, -1)], penalty=list(['l1', 'l2']), n_iter=5):
         super().__init__(alpha_range, penalty, n_iter)
 
     def predict(self, test_features):
         return self._best_estimator.predict(test_features)
 
-    def _make_feature_vec(self, word, prev, prev_prev, next, next_next):
+    def _make_feature_vec(self, word, prev, prev_prev, next, next_next, next_next_next):
         vec = []
         vec.append(get_entity(prev_prev))
         vec.append(get_entity(prev))
@@ -158,42 +157,93 @@ class BaseLine(Model):
         vec.append(is_capitalized(word.token))
         vec.append(is_capitalized(get_token(next)))
         vec.append(is_capitalized(get_token(next_next)))
-
         return vec
 
 
-class BaseLineAndGazetters(Model):
-    def __init__(self, alpha_range=[10 ** i for i in range(-10, -1)], penalty='l2', n_iter=5):
+def gazetters_for_entity(entity):
+    dir = '../gazetters/'+entity
+    gazetters = []
+    for file in os.listdir(dir):
+        with open(os.path.join(dir, file), 'r') as f:
+            gazetters.extend([line.lower() for line in f.readlines()])
+    return gazetters
+
+
+def get_features_for_entity(words, gazetters):
+    while None in words:
+        words.remove(None)
+    while len(words) > 0:
+        phrase = " ".join(words).lower()
+        if phrase in gazetters:
+            return len(words)
+        words.pop(-1)
+    return 0
+
+
+def get_aaa(list):
+    index = {}
+    for line in list:
+        words = line.lower().split()
+        for i in range(len(words)):
+            new_words = index.get(i, [])
+            new_words.append(words[i])
+            index[i] = new_words
+    return index
+
+
+class BaseLineAndGazetters(BaseLine):
+    def __init__(self, alpha_range=[10 ** i for i in range(-10, -1)], penalty=list(['l1', 'l2']), n_iter=5):
         super().__init__(alpha_range, penalty, n_iter)
+        self.topics = {}
+        topics_dir = '../gazetters/topics'
+        for file in os.listdir(topics_dir):
+            with open(os.path.join(topics_dir, file), 'r') as f:
+                self.topics[file] = get_aaa(f.readlines())
+        self.per = gazetters_for_entity('per')
+        self.loc = gazetters_for_entity('loc')
+        self.org = gazetters_for_entity('org')
 
-    def predict(self, test_features):
-        return self._best_estimator.predict(test_features)
-
-    def _make_feature_vec(self, word, prev, prev_prev, next, next_next):
-        vec = []
-        vec.append(get_entity(prev_prev))
-        vec.append(get_entity(prev))
-
-        vec.append(alpha_numeric(word.token))
-        vec.append(all_digits(word.token))
-        vec.append(all_capitalized(word.token))
-
-        # extract 3gram chars from and group the by entity
-
-        # vec.append(get_stem(prev_prev))
-        # vec.append(get_stem(prev))
-        # vec.append(get_stem(word))
-        # vec.append(get_stem(next))
-        # vec.append(get_stem(next_next))
-
-        vec.append(is_capitalized(get_token(prev_prev)))
-        vec.append(is_capitalized(get_token(prev)))
-        vec.append(is_capitalized(word.token))
-        vec.append(is_capitalized(get_token(next)))
-        vec.append(is_capitalized(get_token(next_next)))
-
-        return vec
+    def _get_gazetters_features(self, words):
+        return [get_features_for_entity(words, self.per),
+                get_features_for_entity(words, self.org),
+                get_features_for_entity(words, self.loc)]
 
     def _add_ordinal_features(self, new_features, train, validation, test):
-        # add new features
-        return new_features
+        dataset = Dataset()
+        dataset.merge(train)
+        dataset.merge(validation)
+        dataset.merge(test)
+        ordinal_features = []
+        for doc in dataset.documents:
+            for sentance in doc.sentences:
+                n = len(sentance.words)
+                for i in range(n):
+                    word = sentance.words[i]
+                    next = get_next(sentance.words, i, 1)
+                    next_next = get_next(sentance.words, i, 2)
+                    next_next_next = get_next(sentance.words, i, 3)
+                    ordinal_features.append(self._get_gazetters_features([word, next, next_next, next_next_next]))
+        return np.append(new_features, np.array(ordinal_features), axis=1)
+
+    def predict(self, test_features):
+        return self._best_estimator.predict(test_features)
+
+    def _make_feature_vec(self, word, prev, prev_prev, next, next_next, next_next_next):
+        vec = []
+        vec.append(get_entity(prev_prev))
+        vec.append(get_entity(prev))
+
+        vec.append(alpha_numeric(word.token))
+        vec.append(all_digits(word.token))
+        vec.append(all_capitalized(word.token))
+
+        vec.append(is_capitalized(get_token(prev_prev)))
+        vec.append(is_capitalized(get_token(prev)))
+        vec.append(is_capitalized(word.token))
+        vec.append(is_capitalized(get_token(next)))
+        vec.append(is_capitalized(get_token(next_next)))
+        vec.extend(get_topic(word, self.topics, 0))
+        vec.append(get_topic(next, self.topics, 1))
+        vec.append(get_topic(next_next, self.topics, 2))
+        vec.append(get_topic(next_next_next, self.topics, 3))
+        return vec
