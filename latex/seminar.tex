@@ -135,19 +135,91 @@ Perceptron pokušava naučiti težine na način da ih ne ažurira nakon prolaska
 
 \chapter{Implementacija modela}
 cross validacija, baseline, obicne znacajke, gazetteri-grupe, wikifikacija
-
+\myworries{9-class clasification, klase}
 Sustav za prepoznavanje imenovanih entiteta je razvijen u programskom jeziku Python3. Korištena je implementacija Perceptrona iz scikit-learn\footnote{\url{http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Perceptron.html}} knjižnice. 
 Glavni program runner.py pokreće cijeli cjevovod sustava. Moguće je specificirati jezike skupa za treniranje, validaciju i testiranje preko argumenata komandne linije. Naredba za pokretanje programa koji trenira i validira sustav engleskim i nizozemskim jezikom a testira nad španjolskim jezikom.
+\begin{center}
+python3 runner.py -train eng,ned -validation eng,ned -test esp
+\end{center}
 
-\[ python3  runner.py -train eng,esp -validation eng,esp -test esp \]
+Nakon parsiranja argumenata dohvaćaju se navedeni skupovi za treniranje, validiranje i testiranje. Nakon toga se izvlače značajke iz podataka te se pretprocesiraju u brojčani oblik pogodan za algoritam. Prilikom odabira najboljeg modela radi se unakrsna validacija nad skupovima za treniranje i validiranje. 
+
+Razvijena su tri modela koji se razlikuju u značajkama:
+\begin{enumerate}
+\item Osnovni model (engl. baseline) 
+\item Osnovni model + Gazeteri
+\item Osnovni model + Gazeteri + Wikifikacija
+\end{enumerate}
+
+\myworries{opisati gazetere i wikifikaciju}
+\newpage
+
+
+
 \section{Značajke}
+U tablici je naveden popis značajki podjeljen prema modelima u kojima su korištene.
 
+\begin{center}
+\captionof{table}{Značajke sustava}
+\begin{tabular}{llr}
+\hline
+\textbf{Osnovne značajke} & \\
+prethodni tag entiteta & $ (t_{i-1},t_{i-2}) $\\ 
+sadrži samo brojke i slova & $ alphanumeric(w_i) $\\ 
+sadrži samo brojke  & $ alldigits(w_i) $\\ 
+sadrži samo veika slova & $ allcaps(w_i) $\\ 
+sadrži samo brojke & $ iscapitalized(w_{i-2}, w_{i-1}, w_{i}, w_{i+1}, w_{i+2}) $\\
+\textbf{Gazeteri} & \\
+naziv kategorije gazetera  & $ topic(w_{i}, w_{i+1}, w_{i+2}, w_{i+3}) $\\
+\textbf{Međujezične značajke} & \\
+\hline
+\end{tabular}
+\end{center}
+
+\myworries{detaljnije opisati znacajke}
 \section{Pretprocesiranje značajki}
+Većina korištenih značajki su kategoričke stoga su kodirane Onehot metodom.
+\section{Unakrsna validacija}
+Unaksrsna 5-struka validacija je korištena radi dobivanja najboljeg mogućeg modela za dane podatke. Parametri perceptrona koji su optimizirani unakrsnom validacijom: 
 
+\[ alpha = (10^{-10}, 10^{-9}, ..., 10^{-2}) \]
+\[ penalty = (l2, l1) \]
+
+oba parametra se koriste u svrhu regularizacije,  alpha je konstanta koja množi regularizacijski faktor a penalty je regularizacijska funkcija.
 \chapter{Evaluacija}
-evaluacijske mjere, tablice s rezultatima
+\myworries{evaluacijske mjere, tablice s rezultatima}
+
+Evaluacija sustava rađena je nad testnim skupom podataka. Model koji evaluiramo je najbolji model dobiven unakrsnom validacijom. Mjere koje su korištene za evaluaciju su f1-score, precision, recall, micro and macro accuracy.
+
+
+\begin{center}
+\captionof{table}{Evaluacijske mjere}
+\begin{tabular}{ llccc }
+\hline
+ & ENG & ESP & NED & AVG\\ 
+\hline
+Veličina wiki-a & train & 6600 & 6321 & 7140 \\
+Veličina gazetera & train & 6600 & 6321 & 7140 \\
+Entiteti (treniranje) & train & 4321 & 7390 & 4913 \\
+Entiteti (testiranje) & train & 4716 & 2082 & 3208 \\
+\hline
+\multicolumn{5}{c}{Jednojezični eksperimenti } \\
+\hline
+Osnovne značajke & train & 6600 & 6321 & 7140 \\
++Gazeteri & train & 4321 & 7390 & 4913 \\
++Wikifikacija & train & 4716 & 2082 & 3208 \\
+\hline
+\multicolumn{5}{c}{Međujezični eksperimenti } \\
+\hline
+Osnovne značajke & train & 6600 & 6321 & 7140 \\
++Gazeteri & train & 4321 & 7390 & 4913 \\
++Wikifikacija & train & 4716 & 2082 & 3208 \\
+\hline
+\end{tabular}
+\end{center}
+
 \chapter{Zaključak}
-zakljuciti
+\myworries{zakljuciti}
 \bibliographystyle{fer}
 \bibliography{literatura}
 \nocite{*}
@@ -155,14 +227,14 @@ zakljuciti
 \begin{sazetak}
 
 
-\kljucnerijeci{}
+\kljucnerijeci{Strojno učenje, Procesiranje prirodnog jezika, Prepoznavanje imenovanih entiteta}
 \end{sazetak}
 % TODO: Navedite naslov na engleskom jeziku.
 \engtitle{Cross-Lingual Named Entity Recognition via Wikification}
 \begin{abstract}
 
 
-\keywords{}
+\keywords{Machine learning, Natural language processing, Named entity recognition}
 \end{abstract}
 
 \end{document}

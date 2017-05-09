@@ -32,7 +32,7 @@ class Model:
                                               shuffle=True, n_iter=self.n_iter)
         else:
             parameters = {'alpha': self.alpha_range, 'penalty': self.penalty}
-            clf = GridSearchCV(Perceptron(shuffle=True, n_iter=self.n_iter), parameters, n_jobs=-1, cv=5)
+            clf = GridSearchCV(Perceptron(n_jobs=-1, shuffle=True, n_iter=self.n_iter), parameters, n_jobs=-1, cv=5)
             clf.fit(train_validation_features, train_validation_y)
             print_ms('\ntraining done: ', t6, current_milli_time())
             self._best_estimator = clf.best_estimator_
@@ -52,7 +52,9 @@ class Model:
     def _get_features(self, data):
         features = []
         Y = []
+        print(len(data.documents))
         for doc in data.documents:
+            print(len(doc.sentences))
             for sentance in doc.sentences:
                 n = len(sentance.words)
                 for i in range(n):
@@ -180,15 +182,15 @@ def get_features_for_entity(words, gazetters):
     return 0
 
 
-def get_aaa(list):
-    index = {}
-    for line in list:
+def populate_topics(lines, file, topics):
+    for line in lines:
         words = line.lower().split()
         for i in range(len(words)):
-            new_words = index.get(i, [])
-            new_words.append(words[i])
-            index[i] = new_words
-    return index
+            words_on_place_i = topics.get(i, {})
+            list_of_topics = words_on_place_i.get(words[i], [])
+            list_of_topics.append(file)
+            words_on_place_i[words[i]] = list_of_topics
+            topics[i] = words_on_place_i
 
 
 class BaseLineAndGazetters(BaseLine):
@@ -198,7 +200,7 @@ class BaseLineAndGazetters(BaseLine):
         topics_dir = '../gazetters/topics'
         for file in os.listdir(topics_dir):
             with open(os.path.join(topics_dir, file), 'r') as f:
-                self.topics[file] = get_aaa(f.readlines())
+                populate_topics(f.readlines(), file, self.topics)
         self.per = gazetters_for_entity('per')
         self.loc = gazetters_for_entity('loc')
         self.org = gazetters_for_entity('org')
@@ -242,8 +244,8 @@ class BaseLineAndGazetters(BaseLine):
         vec.append(is_capitalized(word.token))
         vec.append(is_capitalized(get_token(next)))
         vec.append(is_capitalized(get_token(next_next)))
-        vec.extend(get_topic(word, self.topics, 0))
-        vec.append(get_topic(next, self.topics, 1))
-        vec.append(get_topic(next_next, self.topics, 2))
-        vec.append(get_topic(next_next_next, self.topics, 3))
+        vec.extend(get_topic(word, self.topics.get(0, {})))
+        vec.append(get_topic(next, self.topics.get(1, {})))
+        vec.append(get_topic(next_next, self.topics.get(2, {})))
+        vec.append(get_topic(next_next_next, self.topics.get(3, {})))
         return vec

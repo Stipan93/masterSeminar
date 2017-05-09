@@ -64,8 +64,8 @@ def get_index_label(index):
         return 'I-'
 
 
-def get_topic(word, topics, index):
-    for topic, phrases in topics.items():
-        if word in phrases.get(index, []):
-            return get_index_label(index) + topic
+def get_topic(word, words_on_i):
+    topics = words_on_i.get(word, None)
+    if topics is not None:
+            return topics[0]
     return 'unknown'

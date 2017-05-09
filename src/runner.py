@@ -114,8 +114,8 @@ def make_args(train, test):
 def all_combinations():
     for i in ['eng', 'esp', 'ned']:
         for j in ['eng', 'esp', 'ned']:
-            main(make_args(i, j), BaseLine(n_iter=100), '../results/temp/' + i + '_' + j)
-            # main(make_args(i, j), BaseLineAndGazetters(), '../results/temp/' + i + '_' + j)
+            # main(make_args(i, j), BaseLine(n_iter=50), '../results/temp/' + i + '_' + j)
+            main(make_args(i, j), BaseLineAndGazetters(), '../results/temp/' + i + '_' + j)
 
 
 if __name__ == '__main__':
