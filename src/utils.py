@@ -105,6 +105,149 @@ class Word:
         return self.token
 
 
+def set_recall(tp, fp):
+    if tp == 0:
+        return 0
+    else:
+        return tp / (tp + fp)
+
+
+def set_precision(tp, fn):
+    if tp == 0:
+        return 0
+    else:
+        return tp / (tp + fn)
+
+
+def set_f1_score(precision, recall):
+    f1_score = 0
+    if precision != 0 and recall != 0:
+        f1_score = 2*precision*recall/(precision + recall)
+    return f1_score
+
+
+def set_accuracy(tp, tn, fp, fn):
+    if tp != 0 and tn != 0:
+        return (tp + tn) / (tp + tn + fp + fn)
+    return 0
+
+
+def get_metrics_for_entity(param):
+    # tp = fp = fn = tn = 0
+    precision = set_precision(param[0], param[2])
+    recall = set_recall(param[0], param[1])
+    return [precision, recall, set_accuracy(param[0], param[3], param[1], param[2]),
+            set_f1_score(precision, recall)]
+
+
+def _get_exact_metrics(true_y, predicted_y):
+    mapa = {}
+    mapa['PER'] = [0, 0, 0, 0]
+    mapa['LOC'] = [0, 0, 0, 0]
+    mapa['ORG'] = [0, 0, 0, 0]
+    mapa['MISC'] = [0, 0, 0, 0]
+    tp = fp = fn = tn = 0
+    i = 0
+    while i < len(true_y):
+        if true_y[i] == 'O':
+            if predicted_y[i] == 'O':
+                for index in mapa:
+                    lista = mapa[index]
+                    lista[3] += 1
+                    mapa[index] = lista
+            else:
+                entity_type = predicted_y[i].split('-')[1]
+                lista = mapa[entity_type]
+                lista[1] += 1
+                mapa[entity_type] = lista
+            i += 1
+        elif true_y[i].startswith('B'):
+            entity_type = true_y[i].split('-')[1]
+
+            start = i
+            entity = [true_y[i]]
+            i += 1
+            while i < len(true_y) and true_y[i] != 'O' and entity_type == true_y[i].split('-')[1] and \
+                    true_y[i].startswith('I'):
+                entity.append(true_y[i])
+                i += 1
+            if len([i for i, j in zip(entity, predicted_y[start:i]) if i == j]) == len(entity):
+                lista = mapa[entity_type]
+                lista[0] += 1
+                mapa[entity_type] = lista
+            else:
+                lista = mapa[entity_type]
+                lista[2] += 1
+                mapa[entity_type] = lista
+    entity_metrics = {}
+    entity_metrics['PER'] = get_metrics_for_entity(mapa['PER'])
+    entity_metrics['LOC'] = get_metrics_for_entity(mapa['LOC'])
+    entity_metrics['ORG'] = get_metrics_for_entity(mapa['ORG'])
+    entity_metrics['MISC'] = get_metrics_for_entity(mapa['MISC'])
+    return entity_metrics
+
+
+class Eval:
+    def __init__(self, true_y, predicted_y, exact=False):
+        self.class_index = self._init_class_index()
+        self.exact = exact
+        if self.exact:
+            self.exact_metrics = _get_exact_metrics(true_y, predicted_y)
+        else:
+            self.confusion_matrix = np.zeros((9, 9))
+            self.instances = np.zeros(9)
+            for i in range(len(true_y)):
+                self.confusion_matrix[self.class_index[true_y[i]]][self.class_index[predicted_y[i]]] += 1
+                self.instances[self.class_index[true_y[i]]] += 1
+            self.precisions, self.recalls, self.f1_scores, self.accuracies = self._init_metrics()
+
+    def get_confusion_matrix(self):
+        return self.confusion_matrix
+
+    @staticmethod
+    def _init_class_index():
+        return {'B-LOC': 0, 'B-MISC': 1, 'B-ORG': 2, 'B-PER': 3,
+                'I-LOC': 4, 'I-MISC': 5, 'I-ORG': 6, 'I-PER': 7, 'O': 8}
+
+    def _init_metrics(self):
+        precisions = np.zeros(len(self.class_index))
+        recalls = np.zeros(len(self.class_index))
+        f1_scores = np.zeros(len(self.class_index))
+        accuracies = np.zeros(len(self.class_index))
+        for clazz, index in self.class_index.items():
+            tp, fp, fn, tn = self._class_stats_from_confusion_matrix(index)
+            precisions[index] = set_precision(tp, fp)
+            recalls[index] = set_recall(tp, fn)
+            f1_scores[index] = set_f1_score(precisions[index], recalls[index])
+            accuracies[index] = set_accuracy(tp, tn, fp, fn)
+        return precisions, recalls, f1_scores, accuracies
+
+    def _class_stats_from_confusion_matrix(self, index):
+        tp = self.confusion_matrix[index][index]
+        fp = self._sum_column(index) - self.confusion_matrix[index][index]
+        fn = self._sum_row(index) - self.confusion_matrix[index][index]
+        tn = np.sum(self.confusion_matrix) - fn - fp + tp
+        return tp, fp, fn, tn
+
+    def _sum_row(self, index):
+        return np.sum(self.confusion_matrix[index, :])
+
+    def _sum_column(self, index):
+        return np.sum(self.confusion_matrix[:, index])
+
+    def get_avg_f1_score(self):
+        if self.exact:
+            f1_sum = 0
+            for i in self.exact_metrics:
+                f1_sum = self.exact_metrics[i][3]
+            return f1_sum/4
+        else:
+            return np.average(self.f1_scores)
+
+# Eval(['O', 'B-PER','I-PER','B-LOC','O','B-ORG','I-ORG','O'], ['O', 'B-PER','I-PER','B-LOC','B-PER','B-ORG','I-ORG','B-PER'], exact=True)
+# Eval(['O', 'B-PER','I-PER','B-LOC','O','B-ORG','I-ORG','O'], ['O', 'B-PER','I-PER','B-LOC','O','B-ORG','I-ORG','O'], exact=True)
+
+
 def get_data(corpus):
     return Data(corpus)
 

@@ -50,6 +50,13 @@ def get_prev(words, i, offset):
         return None
 
 
+def get_entity_type(entity):
+    if entity == 'O':
+        return entity
+    else:
+        return entity.split('-')[-1]
+
+
 def get_next(words, i, offset):
     if i+offset < len(words):
         return words[i + offset]
@@ -65,7 +72,9 @@ def get_index_label(index):
 
 
 def get_topic(word, words_on_i):
-    topics = words_on_i.get(word, None)
+    if word is None:
+        return 'unknown'
+    topics = words_on_i.get(word.stem, None)
     if topics is not None:
             return topics[0]
     return 'unknown'
