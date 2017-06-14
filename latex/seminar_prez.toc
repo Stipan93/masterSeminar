@@ -1,1 +1,6 @@
 \beamer@endinputifotherversion {3.36pt}
+\beamer@sectionintoc {1}{Opis problema i motivacija}{5}{0}{1}
+\beamer@sectionintoc {2}{Analiza podataka}{10}{0}{2}
+\beamer@sectionintoc {3}{Modeli}{16}{0}{3}
+\beamer@sectionintoc {4}{Zna\IeC {\v c}ajke}{18}{0}{4}
+\beamer@sectionintoc {5}{Evaluacija}{28}{0}{5}

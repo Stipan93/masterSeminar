@@ -35,23 +35,23 @@ def plot_entity_size_counters(counter):
 print('dataset loading')
 
 eng = get_data('eng')
-eng_counter = count_entity_size(eng)
-eng.print_stats()
-plot_entity_size_counters(eng_counter)
+# eng_counter = count_entity_size(eng)
+# eng.print_stats()
+# plot_entity_size_counters(eng_counter)
 # print_entity_size_counter(eng_counter)
 
 print('#'*40)
 esp = get_data('esp')
-esp_counter = count_entity_size(esp)
-esp.print_stats()
-plot_entity_size_counters(esp_counter)
+# esp_counter = count_entity_size(esp)
+# esp.print_stats()
+# plot_entity_size_counters(esp_counter)
 # print_entity_size_counter(count_entity_size(esp))
 
 print('#'*40)
 ned = get_data('ned')
-ned_counter = count_entity_size(ned)
-ned.print_stats()
-plot_entity_size_counters(ned_counter)
+# ned_counter = count_entity_size(ned)
+# ned.print_stats()
+# plot_entity_size_counters(ned_counter)
 
 # print_entity_size_counter(count_entity_size(ned))
 

@@ -5,45 +5,45 @@ The style file: fer.bst
 Database file #1: literatura.bib
 A bad cross reference---entry "DBLP:conf/conll/TsaiMR16"
 refers to entry "DBLP:conf/conll/2016", which doesn't exist
-You've used 5 entries,
+You've used 6 entries,
             2773 wiz_defined-function locations,
-            637 strings with 6208 characters,
-and the built_in function-call counts, 2843 in all, are:
-= -- 282
-> -- 111
+            644 strings with 6386 characters,
+and the built_in function-call counts, 3350 in all, are:
+= -- 322
+> -- 150
 < -- 8
-+ -- 37
-- -- 32
-* -- 188
-:= -- 397
-add.period$ -- 22
-call.type$ -- 5
-change.case$ -- 25
-chr.to.int$ -- 5
-cite$ -- 10
-duplicate$ -- 152
-empty$ -- 253
-format.name$ -- 43
-if$ -- 647
++ -- 50
+- -- 44
+* -- 231
+:= -- 476
+add.period$ -- 26
+call.type$ -- 6
+change.case$ -- 32
+chr.to.int$ -- 6
+cite$ -- 12
+duplicate$ -- 176
+empty$ -- 294
+format.name$ -- 56
+if$ -- 753
 int.to.chr$ -- 1
 int.to.str$ -- 1
-missing$ -- 5
-newline$ -- 37
-num.names$ -- 22
-pop$ -- 58
+missing$ -- 6
+newline$ -- 43
+num.names$ -- 26
+pop$ -- 75
 preamble$ -- 1
-purify$ -- 20
+purify$ -- 26
 quote$ -- 0
-skip$ -- 126
+skip$ -- 142
 stack$ -- 0
-substring$ -- 138
-swap$ -- 46
+substring$ -- 140
+swap$ -- 48
 text.length$ -- 4
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 55
+type$ -- 66
 warning$ -- 0
-while$ -- 28
+while$ -- 31
 width$ -- 0
-write$ -- 84
+write$ -- 98
 (There was 1 error message)

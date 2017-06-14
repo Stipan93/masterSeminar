@@ -113,10 +113,10 @@ def make_args(train, test):
 
 
 def all_combinations():
-    for i in ['eng', 'esp', 'ned']:
-        for j in ['eng', 'esp', 'ned']:
+    for i in ['eng']: #['eng', 'esp', 'ned']:
+        for j in ['ned']: #['eng', 'esp', 'ned']:
             # main(make_args(i, j), BaseLine(n_iter=200), '../results/temp_base200/' + i + '_' + j)
-            main(make_args(i, j), BaseLineAndGazetters(n_iter=200), '../results/temp200/' + i + '_' + j)
+            main(make_args(i, j), BaseLineAndGazetters(n_iter=2000), '../results/temp200/' + i + '_' + j)
 
 
 if __name__ == '__main__':
